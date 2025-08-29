@@ -27,6 +27,8 @@ ARG BUILD_HASH
 
 WORKDIR /app
 
+ENV NODE_OPTIONS=--max-old-space-size=8192
+
 # to store git revision in build
 RUN apk add --no-cache git
 
@@ -71,6 +73,8 @@ ENV OPENAI_API_KEY="" \
     SCARF_NO_ANALYTICS=true \
     DO_NOT_TRACK=true \
     ANONYMIZED_TELEMETRY=false
+
+
 
 #### Other models #########################################################
 ## whisper TTS model settings ##
