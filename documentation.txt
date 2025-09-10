@@ -1,0 +1,5 @@
+# login to acr (sascha.mueller@cubylink.com is permitted)
+az acr login -n cubyacr  
+
+# build docker container
+docker buildx build --platform linux/amd64,linux/arm64 -t cubyacr.azurecr.io/cubygpt:0.6.27 --push .
