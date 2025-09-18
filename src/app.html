@@ -120,10 +120,222 @@
 		<title>CubyGPT</title>
 
 		%sveltekit.head%
+
+    <!-- ===== Company Footer Banner Styles (lighter colors) ===== -->
+    <style id="company-footer-style">
+      :root {
+        --banner-height: 72px;
+        /* slightly lighter gradient than before */
+        --banner-bg-1: #3b6f76;
+        --banner-bg-2: #2f8c95;
+        --banner-color: #ffffff;
+        --banner-max-width: 1400px;
+      }
+
+	  /* #app-root scrollt; splash-screen und footer bleiben fixed */
+#app-root {
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  /* Platz am unteren Rand für den Footer (sicherheitsabstand) */
+  padding-bottom: calc(var(--banner-height,72px) + 16px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* weiches Scrolling auf iOS */
+}
+
+/* Falls bestimmte Layer in der App position:fixed benutzen und relativ zum viewport sind,
+   dieses sorgt dafür, dass sichtbarer Content innerhalb #app-root gescrollt wird,
+   während fixed Elemente (z.B. Footer Banner, Splash) bleiben wo sie sind. */
+
+
+      /* Footer banner (fixed to bottom) - sits below interactive UI by z-index convention */
+      #company-bottom-banner {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--banner-height);
+        width: 100%;
+        background: linear-gradient(180deg, var(--banner-bg-1), var(--banner-bg-2));
+        color: var(--banner-color);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+        -webkit-font-smoothing: antialiased;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        z-index: 200; /* below interactive UI which will be bumped to >= 201 */
+        display: flex;
+        align-items: center;
+        pointer-events: auto;
+      }
+
+      /* inner wrapper centered with max-width */
+      #company-bottom-banner .inner {
+        width: 100%;
+        max-width: var(--banner-max-width);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 16px;
+        box-sizing: border-box;
+      }
+
+      /* logo left */
+      #company-bottom-banner .logo {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+      }
+      #company-bottom-banner .logo img {
+        height: 48px;
+        width: auto;
+        display: block;
+      }
+
+      /* center title */
+      #company-bottom-banner .title {
+        flex: 1 1 auto;
+        text-align: center;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 1;
+        user-select: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* right: links */
+      #company-bottom-banner .links {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+      #company-bottom-banner .links a {
+        color: var(--banner-color);
+        text-decoration: none;
+        padding: 6px 8px;
+      }
+      #company-bottom-banner .links a:hover,
+      #company-bottom-banner .links a:focus {
+        text-decoration: underline;
+        outline: none;
+      }
+
+      /* ensure page content isn't obscured (fallback) */
+      html, body { padding-bottom: calc(var(--banner-height) + 16px) !important; }
+
+      /* responsive */
+      @media (max-width: 900px) {
+        #company-bottom-banner .title { font-size: 16px; }
+        #company-bottom-banner .logo img { height: 40px; }
+        #company-bottom-banner .inner { padding: 10px 12px; }
+      }
+
+      @media (max-width: 520px) {
+        #company-bottom-banner .inner {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        #company-bottom-banner .title {
+          order: 2;
+          width: 100%;
+          text-align: left;
+        }
+        #company-bottom-banner .links {
+          order: 3;
+        }
+        #company-bottom-banner .logo {
+          order: 1;
+        }
+      }
+    </style>
+
+    <!-- ===== existing splash / global styles (kept) ===== -->
+    <style type="text/css" nonce="">
+      /* Grundlayout: erlauben, dass der app-root scrollt; html/body 100% height */
+html, body {
+  height: 100%;
+  margin: 0;
+  /* kein overflow-y:hidden mehr — wir wollen scrollen im app-root */
+  overscroll-behavior-y: auto;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* fallback: Body padding damit Footer nicht über content liegt */
+html, body { padding-bottom: calc(var(--banner-height,72px) + 16px); }
+
+
+      #splash-screen {
+        background: #fff;
+      }
+
+      html.dark #splash-screen {
+        background: #000;
+      }
+
+      html.her #splash-screen {
+        background: #983724;
+      }
+
+      #logo-her {
+        display: none;
+      }
+
+      #progress-background {
+        display: none;
+      }
+
+      #progress-bar {
+        display: none;
+      }
+
+      html.her #logo {
+        display: none;
+      }
+
+      html.her #logo-her {
+        display: block;
+        filter: invert(1);
+      }
+
+      html.her #progress-background {
+        display: block;
+      }
+
+      html.her #progress-bar {
+        display: block;
+      }
+
+      @media (max-width: 24rem) {
+        html.her #progress-background {
+          display: none;
+        }
+
+        html.her #progress-bar {
+          display: none;
+        }
+      }
+
+      @keyframes pulse {
+        50% {
+          opacity: 0.65;
+        }
+      }
+
+      .animate-pulse-fast {
+        animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
 	</head>
 
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
+		<!-- APP ROOT: der scrollbare Bereich der App -->
+<div id="app-root" style="min-height:100vh; display:block;">
+  %sveltekit.body%
+</div>
+
 
 		<div
 			id="splash-screen"
@@ -187,73 +399,142 @@
 				Footer content
 			</span> -->
 		</div>
+
+    <!-- ===== Company Footer Banner (fixed bottom) ===== -->
+    <footer id="company-bottom-banner" role="contentinfo" aria-label="Firmenbanner">
+      <div class="inner" role="region" aria-label="Firmeninformationen">
+        <!-- left: logo (from static/mylogo.png) -->
+        <div class="logo" aria-hidden="false">
+          <img src="/static/mylogo.png" alt="Firmenlogo">
+        </div>
+
+        <!-- centered title / notice -->
+        <div class="title">
+          CubyGPT - Your personal AI assistant
+        </div>
+
+        <!-- right: legal links (open in new tab) -->
+        <nav class="links" aria-label="Rechtliche Links">
+          <a href="https://cubylink.com/datenschutz" target="_blank" rel="noopener noreferrer">Datenschutz</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://cubylink.com/impressum" target="_blank" rel="noopener noreferrer">Impressum</a>
+        </nav>
+      </div>
+    </footer>
+
+    <!-- =======================
+         JS: adjust bottom-anchored UI so they sit above the banner
+         ======================= -->
+    <script>
+      (function () {
+        const ADJUST_CLASS = 'banner-bottom-adjusted';
+        const BANNER_ID = 'company-bottom-banner';
+        const OFFSET = 'calc(var(--banner-height) + 8px)';
+        const SAFETY_MAX = 1500;
+
+        function getBannerZ() {
+          const banner = document.getElementById(BANNER_ID);
+          if (!banner) return 200;
+          const cs = getComputedStyle(banner);
+          const z = parseInt(cs.zIndex);
+          return Number.isFinite(z) ? z : 200;
+        }
+
+        function isVisible(el) {
+          try {
+            if (!el) return false;
+            const cs = getComputedStyle(el);
+            if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return false;
+            const rect = el.getBoundingClientRect();
+            if (rect.width === 0 && rect.height === 0) return false;
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function shouldAdjust(el) {
+          if (!el || el.id === BANNER_ID || (el.closest && el.closest('#' + BANNER_ID))) return false;
+          if (el.classList && el.classList.contains(ADJUST_CLASS)) return false;
+          if (!isVisible(el)) return false;
+          const cs = getComputedStyle(el);
+          if (!(cs.position === 'fixed' || cs.position === 'absolute')) return false;
+          if (!(cs.bottom === '0px' || cs.bottom === '0')) return false;
+          return true;
+        }
+
+        function adjustElement(el, bannerZ) {
+          try {
+            el.style.bottom = OFFSET;
+            const currentZ = parseInt(getComputedStyle(el).zIndex) || 0;
+            if (currentZ <= bannerZ) {
+              el.style.zIndex = (bannerZ + 1).toString();
+            }
+            el.classList.add(ADJUST_CLASS);
+            el.dataset.bannerAdjusted = '1';
+          } catch (e) {
+            // ignore
+          }
+        }
+
+        function scanAndAdjust() {
+          const bannerZ = getBannerZ();
+          const candidates = [];
+
+          // (1) elements with inline bottom:0
+          candidates.push(...Array.from(document.querySelectorAll('[style*="bottom: 0px"], [style*="bottom:0"]')));
+
+          // (2) scan limited DOM for computed bottom:0
+          const all = Array.from(document.body.getElementsByTagName('*'));
+          for (let i = 0, len = Math.min(all.length, SAFETY_MAX); i < len; i++) {
+            const el = all[i];
+            try {
+              const cs = getComputedStyle(el);
+              if ((cs.position === 'fixed' || cs.position === 'absolute') && (cs.bottom === '0px' || cs.bottom === '0')) {
+                candidates.push(el);
+              }
+            } catch (e) {
+              // ignore
+            }
+          }
+
+          // dedupe
+          const set = new Set();
+          const uniq = [];
+          for (const el of candidates) {
+            if (!el || set.has(el)) continue;
+            set.add(el);
+            uniq.push(el);
+          }
+
+          for (const el of uniq) {
+            if (shouldAdjust(el)) adjustElement(el, bannerZ);
+          }
+        }
+
+        // run once when DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', scanAndAdjust, { once: true });
+        } else {
+          scanAndAdjust();
+        }
+
+        // observe DOM changes
+        const mo = new MutationObserver(() => {
+          requestAnimationFrame(scanAndAdjust);
+        });
+        mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+
+        // debug helpers
+        window.__bannerFix = {
+          recheck: scanAndAdjust,
+          bannerZ: getBannerZ,
+          adjustedCount: () => document.querySelectorAll('.' + ADJUST_CLASS).length,
+          listAdjusted: () => Array.from(document.querySelectorAll('.' + ADJUST_CLASS)).map(el => ({
+            tag: el.tagName, id: el.id, classes: el.className, rect: el.getBoundingClientRect(), z: getComputedStyle(el).zIndex
+          }))
+        };
+      })();
+    </script>
 	</body>
 </html>
-
-<style type="text/css" nonce="">
-	html {
-		overflow-y: hidden !important;
-		overscroll-behavior-y: none;
-	}
-
-	#splash-screen {
-		background: #fff;
-	}
-
-	html.dark #splash-screen {
-		background: #000;
-	}
-
-	html.her #splash-screen {
-		background: #983724;
-	}
-
-	#logo-her {
-		display: none;
-	}
-
-	#progress-background {
-		display: none;
-	}
-
-	#progress-bar {
-		display: none;
-	}
-
-	html.her #logo {
-		display: none;
-	}
-
-	html.her #logo-her {
-		display: block;
-		filter: invert(1);
-	}
-
-	html.her #progress-background {
-		display: block;
-	}
-
-	html.her #progress-bar {
-		display: block;
-	}
-
-	@media (max-width: 24rem) {
-		html.her #progress-background {
-			display: none;
-		}
-
-		html.her #progress-bar {
-			display: none;
-		}
-	}
-
-	@keyframes pulse {
-		50% {
-			opacity: 0.65;
-		}
-	}
-
-	.animate-pulse-fast {
-		animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-	}
-</style>
