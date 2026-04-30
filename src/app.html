@@ -60,6 +60,16 @@
         document.getElementById("company-header-banner").style.background = "#000";
       }
 
+      const preloadHref = document.documentElement.classList.contains('dark')
+        ? '/static/splash-dark.png'
+        : '/static/splash.png';
+      const preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.as = 'image';
+      preload.href = preloadHref;
+      preload.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(preload);
+
       window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
         if (localStorage.theme === 'system') {
           if (e.matches) {
@@ -78,6 +88,8 @@
       const logo = document.createElement('img');
       logo.id = 'logo';
       logo.style = 'position: absolute; width: auto; height: 6rem; top: 44%; left: 50%; transform: translateX(-50%); display:block;';
+      logo.loading = 'eager';
+      logo.fetchPriority = 'high';
       logo.src = isDarkMode ? '/static/splash-dark.png' : '/static/splash.png';
 
       document.addEventListener('DOMContentLoaded', function () {
@@ -113,7 +125,7 @@
 
     <div
       style="position:absolute; top:33%; left:50%; width:24rem; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center;">
-      <img id="logo-her" style="width:auto; height:13rem" src="/static/splash.png" class="animate-pulse-fast" />
+      <img id="logo-her" style="width:auto; height:13rem" src="/static/splash.png" loading="eager" fetchpriority="high" class="animate-pulse-fast" />
       <div style="position:relative; width:24rem; margin-top:0.5rem">
         <div id="progress-background"
           style="position:absolute; width:100%; height:0.75rem; border-radius:9999px; background-color:#fafafa9a;">
